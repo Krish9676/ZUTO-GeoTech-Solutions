@@ -1,0 +1,51 @@
+name: crop_disease_detection
+description: A mobile app for detecting crop diseases using AI.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.5
+  dio: ^5.3.2
+  image_picker: ^1.0.4
+  cached_network_image: ^3.2.3
+  shared_preferences: ^2.2.1
+  flutter_markdown: ^0.6.17
+  intl: ^0.18.1
+  path_provider: ^2.1.1
+  provider: ^6.0.5
+  url_launcher: ^6.1.14
+  share_plus: ^7.1.0
+  flutter_native_splash: ^2.3.2
+  flutter_launcher_icons: ^0.13.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+
+# To generate splash screen: flutter pub run flutter_native_splash:create
+flutter_native_splash:
+  color: "#4CAF50"
+  image: assets/images/splash_logo.png
+  android: true
+  ios: true
+
+# To generate app icons: flutter pub run flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.png"
+  adaptive_icon_background: "#4CAF50"
+  adaptive_icon_foreground: "assets/images/app_icon_foreground.png"
