@@ -37,10 +37,19 @@ CLASS_LABELS = load_class_labels()
 def load_model():
     """Load the ONNX model"""
     try:
+        # Check if model file exists
+        if not os.path.exists(MODEL_PATH):
+            print(f"❌ Model file not found at: {MODEL_PATH}")
+            print(f"📁 Current directory: {os.getcwd()}")
+            print(f"📁 Available files in models/: {os.listdir('models') if os.path.exists('models') else 'models/ not found'}")
+            raise FileNotFoundError(f"Model file not found: {MODEL_PATH}")
+        
+        print(f"✅ Loading model from: {MODEL_PATH}")
         session = ort.InferenceSession(MODEL_PATH)
+        print("✅ Model loaded successfully")
         return session
     except Exception as e:
-        print(f"Error loading model: {e}")
+        print(f"❌ Error loading model: {e}")
         raise
 
 
