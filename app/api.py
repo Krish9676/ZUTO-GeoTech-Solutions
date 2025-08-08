@@ -11,6 +11,7 @@ from app.inference import run_inference
 from app.llama_prompt import llama_prompt
 from app.utils.image_utils import preprocess_image, save_image_locally
 from app.utils.heatmap import generate_heatmap
+from app.utils.heatmap_simple import generate_heatmap_simple
 
 # Load environment variables
 load_dotenv()
@@ -48,7 +49,11 @@ async def upload_image(
         confidence = prediction_results["confidence"]
         
         # Generate heatmap (optional)
-        heatmap_path = generate_heatmap(image_path, image_tensor, prediction_results)
+        try:
+            heatmap_path = generate_heatmap(image_path, image_tensor, prediction_results)
+        except Exception as e:
+            print(f"Error with matplotlib heatmap, using simple version: {e}")
+            heatmap_path = generate_heatmap_simple(image_path, image_tensor, prediction_results)
         
         # Upload original image to Supabase Storage
         with open(image_path, "rb") as f:
