@@ -10,15 +10,28 @@ load_dotenv()
 # Path to the ONNX model
 MODEL_PATH = os.getenv("MODEL_PATH", "models/mobilenet.onnx")
 
-# Class labels for the model (example - would be replaced with actual labels)
-CLASS_LABELS = [
-    "Healthy",
-    "Fall Armyworm",
-    "Corn Leaf Blight",
-    "Common Rust",
-    "Gray Leaf Spot",
-    "Northern Leaf Blight"
-]
+# Load class labels from class_map.json
+import json
+
+def load_class_labels():
+    """Load class labels from class_map.json"""
+    try:
+        with open("models/class_map.json", "r") as f:
+            class_map = json.load(f)
+        # Convert to list, sorted by key
+        labels = [class_map[str(i)] for i in range(len(class_map))]
+        return labels
+    except Exception as e:
+        print(f"Error loading class labels: {e}")
+        # Fallback labels
+        return [
+            "banana", "brinjal", "cabbage", "cauliflower", "chilli", "cotton",
+            "grapes", "maize", "mango", "mustard", "onion", "oranges",
+            "papaya", "pomegranade", "potato", "rice", "soyabean", "sugarcane",
+            "tobacco", "tomato", "wheat"
+        ]
+
+CLASS_LABELS = load_class_labels()
 
 
 def load_model():

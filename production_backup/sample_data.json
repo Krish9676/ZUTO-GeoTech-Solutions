@@ -1,0 +1,224 @@
+{
+  "detections": [
+    {
+      "id": "a3ac2be5-f2d8-4816-9fc3-bac14bfc33b3",
+      "image_url": "https://example-storage.supabase.co/crop-images/a3ac2be5-f2d8-4816-9fc3-bac14bfc33b3_cotton.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/a3ac2be5-f2d8-4816-9fc3-bac14bfc33b3_heatmap.jpg",
+      "pest_name": "Powdery Mildew",
+      "confidence": 70.7,
+      "crop_name": "Cotton",
+      "diagnosis": "Your wheat crop is affected by Powdery Mildew, as evidenced by the white, powdery fungal growth on the leaf surface. This disease can reduce photosynthesis and yield if it spreads to the flag leaf and head. For control, apply a fungicide containing a triazole (like tebuconazole) or a strobilurin (like azoxystrobin). The disease is favored by dense canopies, so consider reducing nitrogen rates in future plantings if this is a recurring problem.",
+      "created_at": "2025-08-07T19:04:02.608807",
+      "updated_at": "2025-08-07T19:04:02.608807"
+    },
+    {
+      "id": "7f5643ba-73df-4346-9721-e8a45eb17f39",
+      "image_url": "https://example-storage.supabase.co/crop-images/7f5643ba-73df-4346-9721-e8a45eb17f39_rice.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/7f5643ba-73df-4346-9721-e8a45eb17f39_heatmap.jpg",
+      "pest_name": "Common Rust",
+      "confidence": 95.9,
+      "crop_name": "Rice",
+      "diagnosis": "Common rust in maize is caused by the fungus Puccinia sorghi. It appears as small, circular to elongate, cinnamon-brown pustules on both leaf surfaces. Severe infections can cause leaf death and significant yield loss. Control measures include planting resistant varieties, early application of fungicides, and avoiding excessive nitrogen fertilization which can increase susceptibility.",
+      "created_at": "2025-08-06T06:04:02.608413",
+      "updated_at": "2025-08-06T06:04:02.608413"
+    },
+    {
+      "id": "ae8f8d3c-2ec6-43c9-8f51-6a003a862374",
+      "image_url": "https://example-storage.supabase.co/crop-images/ae8f8d3c-2ec6-43c9-8f51-6a003a862374_tomato.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/ae8f8d3c-2ec6-43c9-8f51-6a003a862374_heatmap.jpg",
+      "pest_name": "Leaf Blast",
+      "confidence": 70.9,
+      "crop_name": "Tomato",
+      "diagnosis": "The image shows Rice Leaf Blast infection. The characteristic diamond or spindle-shaped lesions with gray centers and dark borders are visible on the leaves. This fungal disease can significantly reduce photosynthetic area and yield. For immediate management, apply a systemic fungicide containing tricyclazole or azoxystrobin. Long-term strategies should include resistant varieties and avoiding dense canopies through proper spacing and nitrogen management.",
+      "created_at": "2025-08-04T14:24:02.608561",
+      "updated_at": "2025-08-04T14:24:02.608561"
+    },
+    {
+      "id": "04777591-05e4-4ed4-9b93-961f689e92f5",
+      "image_url": "https://example-storage.supabase.co/crop-images/04777591-05e4-4ed4-9b93-961f689e92f5_maize.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/04777591-05e4-4ed4-9b93-961f689e92f5_heatmap.jpg",
+      "pest_name": "Common Rust",
+      "confidence": 78.1,
+      "crop_name": "Maize",
+      "diagnosis": "The image shows Common Rust infection on your maize crop. This fungal disease produces distinctive reddish-brown pustules scattered across the leaf surface. While moderate infections may not significantly impact yield, severe cases can reduce photosynthesis and grain fill. Consider applying a triazole or strobilurin fungicide if the disease is progressing rapidly, especially before tasseling stage.",
+      "created_at": "2025-08-02T11:33:02.608382",
+      "updated_at": "2025-08-02T11:33:02.608382"
+    },
+    {
+      "id": "179763a1-5b6a-4981-ae0f-87354c3a9928",
+      "image_url": "https://example-storage.supabase.co/crop-images/179763a1-5b6a-4981-ae0f-87354c3a9928_potato.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/179763a1-5b6a-4981-ae0f-87354c3a9928_heatmap.jpg",
+      "pest_name": "Bacterial Leaf Blight",
+      "confidence": 85.5,
+      "crop_name": "Potato",
+      "diagnosis": "Your rice crop is showing Bacterial Leaf Blight infection. The characteristic lesions start at the leaf margins and progress inward, turning from yellow to white as they mature. This bacterial disease can cause significant yield losses, especially in susceptible varieties. For management, drain the field temporarily if possible, avoid excessive nitrogen application, and consider copper-based products as a protective measure for uninfected plants.",
+      "created_at": "2025-08-01T03:13:02.608588",
+      "updated_at": "2025-08-01T03:13:02.608588"
+    },
+    {
+      "id": "20ca3cb3-5c25-4b48-8fb3-2ebb3d2579d8",
+      "image_url": "https://example-storage.supabase.co/crop-images/20ca3cb3-5c25-4b48-8fb3-2ebb3d2579d8_potato.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/20ca3cb3-5c25-4b48-8fb3-2ebb3d2579d8_heatmap.jpg",
+      "pest_name": "Bacterial Leaf Blight",
+      "confidence": 87.6,
+      "crop_name": "Potato",
+      "diagnosis": "Bacterial Leaf Blight, caused by Xanthomonas oryzae pv. oryzae, is a serious disease of rice. It appears as water-soaked lesions that turn yellow-orange and eventually gray-white with wavy edges. The disease is favored by high humidity and temperatures. Management includes planting resistant varieties, balanced fertilization (avoiding excess nitrogen), proper spacing, and copper-based bactericides in severe cases.",
+      "created_at": "2025-07-30T11:53:02.608781",
+      "updated_at": "2025-07-30T11:53:02.608781"
+    },
+    {
+      "id": "21323ee9-e883-47c6-a5a4-334d63bf473f",
+      "image_url": "https://example-storage.supabase.co/crop-images/21323ee9-e883-47c6-a5a4-334d63bf473f_maize.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/21323ee9-e883-47c6-a5a4-334d63bf473f_heatmap.jpg",
+      "pest_name": "Common Rust",
+      "confidence": 89.7,
+      "crop_name": "Maize",
+      "diagnosis": "Common rust in maize is caused by the fungus Puccinia sorghi. It appears as small, circular to elongate, cinnamon-brown pustules on both leaf surfaces. Severe infections can cause leaf death and significant yield loss. Control measures include planting resistant varieties, early application of fungicides, and avoiding excessive nitrogen fertilization which can increase susceptibility.",
+      "created_at": "2025-07-29T14:23:02.608674",
+      "updated_at": "2025-07-29T14:23:02.608674"
+    },
+    {
+      "id": "0775574b-a704-43a8-a4a6-df20709d7092",
+      "image_url": "https://example-storage.supabase.co/crop-images/0775574b-a704-43a8-a4a6-df20709d7092_wheat.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/0775574b-a704-43a8-a4a6-df20709d7092_heatmap.jpg",
+      "pest_name": "Corn Leaf Blight",
+      "confidence": 98.9,
+      "crop_name": "Wheat",
+      "diagnosis": "Northern Corn Leaf Blight is a fungal disease caused by Exserohilum turcicum. It appears as long, elliptical gray-green or tan lesions on corn leaves. The disease thrives in humid conditions with moderate temperatures. Management strategies include planting resistant varieties, crop rotation, fungicide application, and proper field sanitation by removing crop debris.",
+      "created_at": "2025-07-27T15:34:02.608191",
+      "updated_at": "2025-07-27T15:34:02.608191"
+    },
+    {
+      "id": "63d4f092-9327-479f-93e3-de5d3decbcbb",
+      "image_url": "https://example-storage.supabase.co/crop-images/63d4f092-9327-479f-93e3-de5d3decbcbb_wheat.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/63d4f092-9327-479f-93e3-de5d3decbcbb_heatmap.jpg",
+      "pest_name": "Bacterial Leaf Blight",
+      "confidence": 99.3,
+      "crop_name": "Wheat",
+      "diagnosis": "Your rice crop is showing Bacterial Leaf Blight infection. The characteristic lesions start at the leaf margins and progress inward, turning from yellow to white as they mature. This bacterial disease can cause significant yield losses, especially in susceptible varieties. For management, drain the field temporarily if possible, avoid excessive nitrogen application, and consider copper-based products as a protective measure for uninfected plants.",
+      "created_at": "2025-07-25T01:09:02.608502",
+      "updated_at": "2025-07-25T01:09:02.608502"
+    },
+    {
+      "id": "bab5b226-4278-4d6f-b773-223b3eedee5b",
+      "image_url": "https://example-storage.supabase.co/crop-images/bab5b226-4278-4d6f-b773-223b3eedee5b_maize.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/bab5b226-4278-4d6f-b773-223b3eedee5b_heatmap.jpg",
+      "pest_name": "Powdery Mildew",
+      "confidence": 85.1,
+      "crop_name": "Maize",
+      "diagnosis": "Powdery Mildew in wheat is caused by Blumeria graminis f. sp. tritici. It appears as white, powdery patches on leaves, stems, and heads. The disease is favored by moderate temperatures and high humidity but can develop without free water. Management includes resistant varieties, balanced fertilization, proper spacing, and timely fungicide applications, particularly with triazoles or strobilurins.",
+      "created_at": "2025-07-22T03:31:02.608442",
+      "updated_at": "2025-07-22T03:31:02.608442"
+    },
+    {
+      "id": "08e6b5cc-21e9-41a3-9c8a-4383d2737e98",
+      "image_url": "https://example-storage.supabase.co/crop-images/08e6b5cc-21e9-41a3-9c8a-4383d2737e98_maize.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/08e6b5cc-21e9-41a3-9c8a-4383d2737e98_heatmap.jpg",
+      "pest_name": "Common Rust",
+      "confidence": 82.3,
+      "crop_name": "Maize",
+      "diagnosis": "The image shows Common Rust infection on your maize crop. This fungal disease produces distinctive reddish-brown pustules scattered across the leaf surface. While moderate infections may not significantly impact yield, severe cases can reduce photosynthesis and grain fill. Consider applying a triazole or strobilurin fungicide if the disease is progressing rapidly, especially before tasseling stage.",
+      "created_at": "2025-07-20T19:52:02.608616",
+      "updated_at": "2025-07-20T19:52:02.608616"
+    },
+    {
+      "id": "d6ab7933-c37b-439b-825a-0f718dd2d1b2",
+      "image_url": "https://example-storage.supabase.co/crop-images/d6ab7933-c37b-439b-825a-0f718dd2d1b2_rice.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/d6ab7933-c37b-439b-825a-0f718dd2d1b2_heatmap.jpg",
+      "pest_name": "Northern Leaf Blight",
+      "confidence": 73.8,
+      "crop_name": "Rice",
+      "diagnosis": "Northern Leaf Blight in corn is caused by Exserohilum turcicum. It produces distinctive cigar-shaped lesions that are grayish-green to tan. The disease can cause significant yield loss if it develops before or during tasseling. Management strategies include planting resistant hybrids, crop rotation, fungicide applications, and residue management.",
+      "created_at": "2025-07-20T09:23:02.608835",
+      "updated_at": "2025-07-20T09:23:02.608835"
+    },
+    {
+      "id": "9e76b313-0d4c-46ba-af3a-838be365e117",
+      "image_url": "https://example-storage.supabase.co/crop-images/9e76b313-0d4c-46ba-af3a-838be365e117_wheat.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/9e76b313-0d4c-46ba-af3a-838be365e117_heatmap.jpg",
+      "pest_name": "Northern Leaf Blight",
+      "confidence": 99.2,
+      "crop_name": "Wheat",
+      "diagnosis": "Northern Leaf Blight in corn is caused by Exserohilum turcicum. It produces distinctive cigar-shaped lesions that are grayish-green to tan. The disease can cause significant yield loss if it develops before or during tasseling. Management strategies include planting resistant hybrids, crop rotation, fungicide applications, and residue management.",
+      "created_at": "2025-07-19T23:42:02.608647",
+      "updated_at": "2025-07-19T23:42:02.608647"
+    },
+    {
+      "id": "0b52e0bd-5ea3-413d-8e44-cc9cd9de7a6f",
+      "image_url": "https://example-storage.supabase.co/crop-images/0b52e0bd-5ea3-413d-8e44-cc9cd9de7a6f_maize.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/0b52e0bd-5ea3-413d-8e44-cc9cd9de7a6f_heatmap.jpg",
+      "pest_name": "Leaf Blast",
+      "confidence": 90.8,
+      "crop_name": "Maize",
+      "diagnosis": "Rice Blast, caused by Magnaporthe oryzae, is one of the most destructive rice diseases worldwide. It appears as diamond-shaped lesions with gray centers and brown borders on leaves. The disease thrives in conditions of high humidity and moderate temperatures. Control measures include resistant varieties, balanced fertilization, proper water management, and fungicide applications at critical growth stages.",
+      "created_at": "2025-07-17T05:01:02.608727",
+      "updated_at": "2025-07-17T05:01:02.608727"
+    },
+    {
+      "id": "da9a3d65-e1c5-4248-9d06-c4114b7eb1a4",
+      "image_url": "https://example-storage.supabase.co/crop-images/da9a3d65-e1c5-4248-9d06-c4114b7eb1a4_potato.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/da9a3d65-e1c5-4248-9d06-c4114b7eb1a4_heatmap.jpg",
+      "pest_name": "Bacterial Leaf Blight",
+      "confidence": 77.6,
+      "crop_name": "Potato",
+      "diagnosis": "Your rice crop is showing Bacterial Leaf Blight infection. The characteristic lesions start at the leaf margins and progress inward, turning from yellow to white as they mature. This bacterial disease can cause significant yield losses, especially in susceptible varieties. For management, drain the field temporarily if possible, avoid excessive nitrogen application, and consider copper-based products as a protective measure for uninfected plants.",
+      "created_at": "2025-07-16T23:06:02.608303",
+      "updated_at": "2025-07-16T23:06:02.608303"
+    },
+    {
+      "id": "d750373f-2d5d-4fcb-ba58-35f1fe93f791",
+      "image_url": "https://example-storage.supabase.co/crop-images/d750373f-2d5d-4fcb-ba58-35f1fe93f791_cotton.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/d750373f-2d5d-4fcb-ba58-35f1fe93f791_heatmap.jpg",
+      "pest_name": "Common Rust",
+      "confidence": 80.0,
+      "crop_name": "Cotton",
+      "diagnosis": "The image shows Common Rust infection on your maize crop. This fungal disease produces distinctive reddish-brown pustules scattered across the leaf surface. While moderate infections may not significantly impact yield, severe cases can reduce photosynthesis and grain fill. Consider applying a triazole or strobilurin fungicide if the disease is progressing rapidly, especially before tasseling stage.",
+      "created_at": "2025-07-16T02:36:02.608533",
+      "updated_at": "2025-07-16T02:36:02.608533"
+    },
+    {
+      "id": "6964aedd-9157-4039-af3f-b5635b150cd9",
+      "image_url": "https://example-storage.supabase.co/crop-images/6964aedd-9157-4039-af3f-b5635b150cd9_cotton.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/6964aedd-9157-4039-af3f-b5635b150cd9_heatmap.jpg",
+      "pest_name": "Healthy",
+      "confidence": 89.3,
+      "crop_name": "Cotton",
+      "diagnosis": "The plant in the image is healthy. The leaves display normal color, structure, and development with no visible symptoms of disease, pest damage, or nutrient deficiencies. Maintain your current agricultural practices, including appropriate irrigation and fertilization schedules, while continuing regular scouting for any emerging issues.",
+      "created_at": "2025-07-11T23:28:02.608470",
+      "updated_at": "2025-07-11T23:28:02.608470"
+    },
+    {
+      "id": "e3c95044-fd93-4c09-bffa-da5e05977a8d",
+      "image_url": "https://example-storage.supabase.co/crop-images/e3c95044-fd93-4c09-bffa-da5e05977a8d_cotton.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/e3c95044-fd93-4c09-bffa-da5e05977a8d_heatmap.jpg",
+      "pest_name": "Healthy",
+      "confidence": 94.8,
+      "crop_name": "Cotton",
+      "diagnosis": "Your crop appears healthy with no visible signs of disease or pest damage. The leaves show good coloration and structure, indicating proper nutrition and growing conditions. Continue with your current management practices, including regular monitoring for early detection of any potential issues.",
+      "created_at": "2025-07-09T13:25:02.608701",
+      "updated_at": "2025-07-09T13:25:02.608701"
+    },
+    {
+      "id": "5a03d93e-d439-45be-887d-673c27a06e3d",
+      "image_url": "https://example-storage.supabase.co/crop-images/5a03d93e-d439-45be-887d-673c27a06e3d_rice.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/5a03d93e-d439-45be-887d-673c27a06e3d_heatmap.jpg",
+      "pest_name": "Leaf Blast",
+      "confidence": 97.4,
+      "crop_name": "Rice",
+      "diagnosis": "The image shows Rice Leaf Blast infection. The characteristic diamond or spindle-shaped lesions with gray centers and dark borders are visible on the leaves. This fungal disease can significantly reduce photosynthetic area and yield. For immediate management, apply a systemic fungicide containing tricyclazole or azoxystrobin. Long-term strategies should include resistant varieties and avoiding dense canopies through proper spacing and nitrogen management.",
+      "created_at": "2025-07-09T10:40:02.608754",
+      "updated_at": "2025-07-09T10:40:02.608754"
+    },
+    {
+      "id": "fee69489-fd79-4af7-b251-7c6df858b5bd",
+      "image_url": "https://example-storage.supabase.co/crop-images/fee69489-fd79-4af7-b251-7c6df858b5bd_wheat.jpg",
+      "heatmap_url": "https://example-storage.supabase.co/heatmaps/fee69489-fd79-4af7-b251-7c6df858b5bd_heatmap.jpg",
+      "pest_name": "Healthy",
+      "confidence": 79.5,
+      "crop_name": "Wheat",
+      "diagnosis": "The plant in the image is healthy. The leaves display normal color, structure, and development with no visible symptoms of disease, pest damage, or nutrient deficiencies. Maintain your current agricultural practices, including appropriate irrigation and fertilization schedules, while continuing regular scouting for any emerging issues.",
+      "created_at": "2025-07-09T09:45:02.608342",
+      "updated_at": "2025-07-09T09:45:02.608342"
+    }
+  ]
+}

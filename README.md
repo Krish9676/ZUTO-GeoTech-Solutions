@@ -51,15 +51,58 @@ project/
 
 ## Setup and Installation
 
+### Prerequisites
+- Python 3.8+
+- Supabase account
+- Ollama (optional, for LLM diagnosis)
+
+### Quick Start
 1. Clone the repository
 2. Install dependencies: `pip install -r requirements.txt`
-3. Set up environment variables in `.env`
-4. Run the API: `uvicorn app.main:app --reload`
+3. Copy `.env.example` to `.env` and update with your credentials
+4. Run the API: `python run.py` or `uvicorn app.main:app --reload`
+
+### Environment Variables
+Create a `.env` file with the following variables:
+```
+API_HOST=0.0.0.0
+API_PORT=8000
+MODEL_PATH=models/mobilenet.onnx
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_anon_key
+SUPABASE_STORAGE_BUCKET=crop-images
+SUPABASE_HEATMAP_BUCKET=heatmaps
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3
+```
 
 ## API Endpoints
 
-- `POST /upload`: Upload an image for pest/disease detection
-  - Returns prediction, confidence, image URL, heatmap URL, and diagnosis
+### Health Check
+- `GET /`: Health check endpoint
+  - Returns: `{"status": "ok", "message": "Crop Disease Detection API is running"}`
+
+### Image Upload and Analysis
+- `POST /api/upload`: Upload an image for crop disease detection
+  - **Parameters:**
+    - `file`: Image file (JPEG, PNG)
+    - `crop_name`: Optional crop name (string)
+  - **Returns:**
+    ```json
+    {
+      "id": "uuid",
+      "prediction": "crop_name",
+      "confidence": 95.5,
+      "image_url": "https://...",
+      "heatmap_url": "https://...",
+      "diagnosis": "Detailed diagnosis from LLM"
+    }
+    ```
+
+### Database Endpoints
+- `GET /api/detections`: Get recent detections
+- `GET /api/detections/{id}`: Get specific detection
+- `GET /api/detections/crop/{crop_name}`: Get detections by crop
 
 ## Mobile App
 
@@ -71,4 +114,32 @@ The mobile app allows farmers to:
 
 ## Deployment
 
-The application can be deployed using Docker and GitHub Actions to services like Render.
+### Docker Deployment
+```bash
+# Build the Docker image
+docker build -t crop-disease-detection .
+
+# Run the container
+docker run -p 8000:8000 --env-file .env crop-disease-detection
+```
+
+### Cloud Deployment
+The application can be deployed to:
+- **Render**: Easy deployment with automatic scaling
+- **Railway**: Simple container deployment
+- **Heroku**: Container deployment
+- **AWS ECS**: Enterprise-grade container orchestration
+- **Google Cloud Run**: Serverless container platform
+
+### Environment Setup for Production
+1. Set all environment variables in your cloud platform
+2. Ensure model files are included in the deployment
+3. Configure CORS settings for your domain
+4. Set up monitoring and logging
+5. Configure SSL certificates
+
+### Performance Optimization
+- Model caching for faster inference
+- Image compression for storage efficiency
+- Database connection pooling
+- CDN for static assets
