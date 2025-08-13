@@ -7,8 +7,35 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Path to the ONNX model
-MODEL_PATH = os.getenv("MODEL_PATH", os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "mobilenet.onnx"))
+# Path to the ONNX model - use absolute path resolution
+def get_model_path():
+    """Get the correct path to the model file"""
+    # Try multiple possible locations
+    possible_paths = [
+        # If MODEL_PATH environment variable is set
+        os.getenv("MODEL_PATH"),
+        # Relative to current file location
+        os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "mobilenet.onnx"),
+        # Relative to current working directory
+        os.path.join(os.getcwd(), "models", "mobilenet.onnx"),
+        # Relative to api directory
+        os.path.join("models", "mobilenet.onnx"),
+        # Absolute path from project root
+        os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "api", "models", "mobilenet.onnx")
+    ]
+    
+    for path in possible_paths:
+        if path and os.path.exists(path):
+            print(f"✅ Found model at: {path}")
+            return path
+    
+    # If no path found, show available paths for debugging
+    print(f"❌ Model file not found. Searched in:")
+    for path in possible_paths:
+        if path:
+            print(f"   - {path} (exists: {os.path.exists(path)})")
+    
+    raise FileNotFoundError("Model file not found in any expected location")
 
 # Load class labels from class_map.json
 import json
@@ -16,12 +43,31 @@ import json
 def load_class_labels():
     """Load class labels from class_map.json"""
     try:
-        class_map_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "class_map.json")
-        with open(class_map_path, "r") as f:
-            class_map = json.load(f)
-        # Convert to list, sorted by key
-        labels = [class_map[str(i)] for i in range(len(class_map))]
-        return labels
+        # Try multiple possible locations for class_map.json
+        possible_paths = [
+            os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "class_map.json"),
+            os.path.join(os.getcwd(), "models", "class_map.json"),
+            os.path.join("models", "class_map.json"),
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "api", "models", "class_map.json")
+        ]
+        
+        for path in possible_paths:
+            if os.path.exists(path):
+                with open(path, "r") as f:
+                    class_map = json.load(f)
+                # Convert to list, sorted by key
+                labels = [class_map[str(i)] for i in range(len(class_map))]
+                print(f"✅ Loaded class labels from: {path}")
+                return labels
+        
+        print("❌ Class map not found, using fallback labels")
+        # Fallback labels
+        return [
+            "banana", "brinjal", "cabbage", "cauliflower", "chilli", "cotton",
+            "grapes", "maize", "mango", "mustard", "onion", "oranges",
+            "papaya", "pomegranade", "potato", "rice", "soyabean", "sugarcane",
+            "tobacco", "tomato", "wheat"
+        ]
     except Exception as e:
         print(f"Error loading class labels: {e}")
         # Fallback labels
@@ -38,15 +84,11 @@ CLASS_LABELS = load_class_labels()
 def load_model():
     """Load the ONNX model"""
     try:
-        # Check if model file exists
-        if not os.path.exists(MODEL_PATH):
-            print(f"❌ Model file not found at: {MODEL_PATH}")
-            print(f"📁 Current directory: {os.getcwd()}")
-            print(f"📁 Available files in models/: {os.listdir('models') if os.path.exists('models') else 'models/ not found'}")
-            raise FileNotFoundError(f"Model file not found: {MODEL_PATH}")
+        # Get the correct model path
+        model_path = get_model_path()
         
-        print(f"✅ Loading model from: {MODEL_PATH}")
-        session = ort.InferenceSession(MODEL_PATH)
+        print(f"✅ Loading model from: {model_path}")
+        session = ort.InferenceSession(model_path)
         print("✅ Model loaded successfully")
         return session
     except Exception as e:
