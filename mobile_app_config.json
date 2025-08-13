@@ -1,0 +1,16 @@
+{
+  "api_base_url": "https://crop-disease-detection-api-0spd.onrender.com",
+  "endpoints": {
+    "upload": "/api/upload",
+    "history": "/api/history",
+    "detections": "/api/detections"
+  },
+  "timeout_seconds": 30,
+  "max_image_size": "5MB",
+  "supported_image_formats": [
+    "jpg",
+    "jpeg",
+    "png"
+  ],
+  "test_timestamp": "2025-08-12T14:44:20.773368"
+}
