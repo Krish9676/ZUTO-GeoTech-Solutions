@@ -17,6 +17,7 @@ services:
       echo "Available files: $(ls -la)"
       echo "Starting with: python run.py"
       python run.py
+    healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.0

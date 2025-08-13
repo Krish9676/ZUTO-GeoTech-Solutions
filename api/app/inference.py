@@ -7,6 +7,9 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Global model session - lazy loaded
+_model_session = None
+
 # Path to the ONNX model - use absolute path resolution
 def get_model_path():
     """Get the correct path to the model file"""
@@ -82,18 +85,22 @@ CLASS_LABELS = load_class_labels()
 
 
 def load_model():
-    """Load the ONNX model"""
-    try:
-        # Get the correct model path
-        model_path = get_model_path()
-        
-        print(f"✅ Loading model from: {model_path}")
-        session = ort.InferenceSession(model_path)
-        print("✅ Model loaded successfully")
-        return session
-    except Exception as e:
-        print(f"❌ Error loading model: {e}")
-        raise
+    """Load the ONNX model (lazy loading)"""
+    global _model_session
+    
+    if _model_session is None:
+        try:
+            # Get the correct model path
+            model_path = get_model_path()
+            
+            print(f"✅ Loading model from: {model_path}")
+            _model_session = ort.InferenceSession(model_path)
+            print("✅ Model loaded successfully")
+        except Exception as e:
+            print(f"❌ Error loading model: {e}")
+            raise
+    
+    return _model_session
 
 
 def run_inference(image_tensor) -> Dict[str, Any]:
@@ -106,7 +113,7 @@ def run_inference(image_tensor) -> Dict[str, Any]:
         Dictionary containing prediction results
     """
     try:
-        # Load the model
+        # Load the model (lazy loading - only loads on first request)
         session = load_model()
         
         # Get input name

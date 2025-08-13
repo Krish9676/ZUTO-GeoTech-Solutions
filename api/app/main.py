@@ -35,6 +35,26 @@ async def root():
     return {"status": "ok", "message": "Crop Disease Detection API is running"}
 
 
+@app.get("/health")
+async def health_check():
+    """Quick health check for load balancers"""
+    return {"status": "healthy", "timestamp": "2024-01-01T00:00:00Z"}
+
+
+@app.get("/ready")
+async def ready_check():
+    """Readiness check - verifies the API is ready to handle requests"""
+    try:
+        # Quick check if we can access the models directory
+        models_dir = os.path.join(os.path.dirname(__file__), "..", "models")
+        if os.path.exists(models_dir):
+            return {"status": "ready", "models": "available"}
+        else:
+            return {"status": "not_ready", "models": "missing"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
