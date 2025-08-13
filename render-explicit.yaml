@@ -10,13 +10,7 @@ services:
       echo "=== VERIFYING MODELS ==="
       ls -la api/models/
       echo "=== BUILD COMPLETE ==="
-    startCommand: |
-      echo "=== STARTING APPLICATION ==="
-      echo "Current directory: $(pwd)"
-      echo "Python version: $(python --version)"
-      echo "Available files: $(ls -la)"
-      echo "Starting with: python run.py"
-      python run.py
+    startCommand: python run.py
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.0
