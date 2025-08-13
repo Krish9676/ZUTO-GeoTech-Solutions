@@ -135,14 +135,26 @@ def run_inference(image_tensor) -> Dict[str, Any]:
         # Process the output
         scores = outputs[0][0]
         
-        # Get the index of the highest score
-        predicted_class_idx = np.argmax(scores)
+        # Apply softmax to convert logits to probabilities
+        exp_scores = np.exp(scores - np.max(scores))  # Subtract max for numerical stability
+        probabilities = exp_scores / np.sum(exp_scores)
         
-        # Get the confidence score (convert to percentage)
-        confidence = float(scores[predicted_class_idx] * 100)
+        # Get the index of the highest probability
+        predicted_class_idx = np.argmax(probabilities)
+        
+        # Get the confidence score (convert probability to percentage)
+        confidence = float(probabilities[predicted_class_idx] * 100)
+        
+        # Ensure confidence is within valid range (0-100)
+        confidence = max(0.0, min(100.0, confidence))
         
         # Get the class label
         label = CLASS_LABELS[predicted_class_idx]
+        
+        # Debug information
+        print(f"🎯 Raw scores: {scores[predicted_class_idx]:.4f}")
+        print(f"🎯 Probability: {probabilities[predicted_class_idx]:.4f}")
+        print(f"🎯 Confidence: {confidence:.2f}%")
         
         # Return the results
         return {
@@ -150,6 +162,7 @@ def run_inference(image_tensor) -> Dict[str, Any]:
             "confidence": confidence,
             "class_index": int(predicted_class_idx),
             "raw_scores": scores.tolist(),
+            "probabilities": probabilities.tolist(),
         }
     
     except Exception as e:
