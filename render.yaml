@@ -2,6 +2,7 @@ services:
   - type: web
     name: crop-disease-detection-api
     env: python
+    rootDir: api
     buildCommand: |
       pip install -r requirements.txt
       echo "Verifying model files..."
