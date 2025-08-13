@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 # Import API routes
-from app.api import router as api_router
+from .api import router as api_router
 
 # Load environment variables
 load_dotenv()
@@ -38,8 +38,8 @@ async def root():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
-        "app.main:app",
+        "api.app.main:app",
         host=os.getenv("API_HOST", "0.0.0.0"),
-        port=int(os.getenv("API_PORT", 8000)),
+        port=int(os.getenv("API_PORT", "8000")),
         reload=True
     )
