@@ -1,0 +1,5 @@
+# Root requirements.txt for Render deployment
+# This file installs dependencies from the api/ folder
+
+# Install requirements from api folder
+-r api/requirements.txt

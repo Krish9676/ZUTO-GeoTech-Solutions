@@ -2,13 +2,12 @@ services:
   - type: web
     name: crop-disease-detection-api
     env: python
-    rootDir: api
     buildCommand: |
       pip install -r requirements.txt
       echo "Verifying model files..."
-      ls -la models/
+      ls -la api/models/
       echo "Model files verified"
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn api.app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.0

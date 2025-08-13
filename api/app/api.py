@@ -7,11 +7,11 @@ import supabase
 from dotenv import load_dotenv
 
 # Import local modules
-from .inference import run_inference
-from .llama_prompt import llama_prompt
-from .utils.image_utils import preprocess_image, save_image_locally
-from .utils.heatmap import generate_heatmap
-from .utils.heatmap_simple import generate_heatmap_simple
+from app.inference import run_inference
+from app.llama_prompt import llama_prompt
+from app.utils.image_utils import preprocess_image, save_image_locally
+from app.utils.heatmap import generate_heatmap
+from app.utils.heatmap_simple import generate_heatmap_simple
 
 # Load environment variables
 load_dotenv()
