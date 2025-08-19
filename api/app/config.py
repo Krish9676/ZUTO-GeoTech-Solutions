@@ -26,6 +26,7 @@ MODEL_INPUT_SIZE = int(os.getenv("MODEL_INPUT_SIZE", "160"))
 
 # Class and crop map paths
 CLASS_MAP_PATH = BASE_DIR / "models" / "class_map.json"
+DISEASE_CLASS_MAP_PATH = BASE_DIR / "models" / "disease_class_map.json"
 CROP_MAP_PATH = BASE_DIR / "models" / "crop_map.json"
 
 # API configuration
@@ -92,9 +93,13 @@ def get_model_paths() -> List[str]:
 def get_class_map_paths() -> List[str]:
     """Get all possible class map paths for fallback"""
     return [
+        str(DISEASE_CLASS_MAP_PATH),  # Try new disease class map first
         str(CLASS_MAP_PATH),
+        str(BASE_DIR / "models" / "disease_class_map.json"),
         str(BASE_DIR / "models" / "class_map.json"),
+        str(Path.cwd() / "models" / "disease_class_map.json"),
         str(Path.cwd() / "models" / "class_map.json"),
+        "models/disease_class_map.json",
         "models/class_map.json"
     ]
 

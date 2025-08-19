@@ -26,13 +26,24 @@ def get_model_path():
     
     raise FileNotFoundError("Model file not found in any expected location")
 
-# Load class labels from class_map.json
+# Load class labels from disease_class_map.json
 import json
 
 def load_class_labels():
-    """Load class labels from class_map.json"""
+    """Load disease class labels from disease_class_map.json"""
     try:
-        # Use centralized config paths
+        # First try to load the new disease class map
+        disease_class_map_path = os.path.join(os.path.dirname(__file__), "..", "models", "disease_class_map.json")
+        
+        if os.path.exists(disease_class_map_path):
+            with open(disease_class_map_path, "r") as f:
+                class_map = json.load(f)
+            # Convert to list, sorted by key
+            labels = [class_map[str(i)] for i in range(len(class_map))]
+            print(f"✅ Loaded disease class labels from: {disease_class_map_path}")
+            return labels
+        
+        # Fallback to original class_map.json
         possible_paths = get_class_map_paths()
         
         for path in possible_paths:
@@ -44,22 +55,24 @@ def load_class_labels():
                 print(f"✅ Loaded class labels from: {path}")
                 return labels
         
-        print("❌ Class map not found, using fallback labels")
+        print("❌ No class map found, using fallback labels")
         # Fallback labels - update these based on your actual training classes
         return [
-            "banana", "brinjal", "cabbage", "cauliflower", "chilli", "cotton",
-            "grapes", "maize", "mango", "mustard", "onion", "oranges",
-            "papaya", "pomegranade", "potato", "rice", "soyabean", "sugarcane",
-            "tobacco", "tomato", "wheat"
+            "healthy_rice", "rice_bacterial_blight", "rice_brown_spot", "rice_leaf_smut",
+            "healthy_wheat", "wheat_brown_rust", "wheat_yellow_rust", "wheat_septoria_leaf_blotch",
+            "healthy_maize", "maize_gray_leaf_spot", "maize_common_rust", "maize_northern_leaf_blight",
+            "healthy_potato", "potato_early_blight", "potato_late_blight",
+            "healthy_tomato", "tomato_bacterial_spot", "tomato_early_blight", "tomato_late_blight"
         ]
     except Exception as e:
         print(f"Error loading class labels: {e}")
         # Fallback labels
         return [
-            "banana", "brinjal", "cabbage", "cauliflower", "chilli", "cotton",
-            "grapes", "maize", "mango", "mustard", "onion", "oranges",
-            "papaya", "pomegranade", "potato", "rice", "soyabean", "sugarcane",
-            "tobacco", "tomato", "wheat"
+            "healthy_rice", "rice_bacterial_blight", "rice_brown_spot", "rice_leaf_smut",
+            "healthy_wheat", "wheat_brown_rust", "wheat_yellow_rust", "wheat_septoria_leaf_blotch",
+            "healthy_maize", "maize_gray_leaf_spot", "maize_common_rust", "maize_northern_leaf_blight",
+            "healthy_potato", "potato_early_blight", "potato_late_blight",
+            "healthy_tomato", "tomato_bacterial_spot", "tomato_early_blight", "tomato_late_blight"
         ]
 
 # Load crop labels - you'll need to create this based on your training
@@ -176,11 +189,11 @@ def run_inference(image_tensor, crop_name: str = None) -> Dict[str, Any]:
         # Get the index of the highest probability
         predicted_class_idx = np.argmax(probabilities)
         
-        # Get the confidence score (convert probability to percentage)
-        confidence = float(probabilities[predicted_class_idx] * 100)
+        # Get the confidence score (probability is already between 0-1)
+        confidence = float(probabilities[predicted_class_idx])
         
-        # Ensure confidence is within valid range (0-100)
-        confidence = max(0.0, min(100.0, confidence))
+        # Ensure confidence is within valid range (0-1)
+        confidence = max(0.0, min(1.0, confidence))
         
         # Get the class label
         label = CLASS_LABELS[predicted_class_idx]
@@ -189,7 +202,7 @@ def run_inference(image_tensor, crop_name: str = None) -> Dict[str, Any]:
         print(f"🎯 Crop used: {crop_name or 'default'}")
         print(f"🎯 Raw scores: {scores[predicted_class_idx]:.4f}")
         print(f"🎯 Probability: {probabilities[predicted_class_idx]:.4f}")
-        print(f"🎯 Confidence: {confidence:.2f}%")
+        print(f"🎯 Confidence: {confidence:.4f} ({confidence*100:.2f}%)")
         
         # Return the results
         return {

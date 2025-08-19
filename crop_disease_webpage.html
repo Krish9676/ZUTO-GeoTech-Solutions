@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Disease Detection - API Integration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .api-status {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-online {
+            background: #4CAF50;
+        }
+
+        .status-offline {
+            background: #f44336;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .upload-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .upload-area {
+            border: 3px dashed #ddd;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .crop-selector {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .crop-selector select {
+            padding: 10px 20px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .analyze-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .analyze-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .result-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .prediction {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .confidence {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .image-preview {
+            max-width: 300px;
+            max-height: 200px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .history-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .history-item {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 3px solid #ddd;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #f44336;
+        }
+
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌾 Crop Disease Detection</h1>
+            <p>AI-powered pest and disease analysis for your crops</p>
+        </div>
+
+        <!-- API Status -->
+        <div class="api-status">
+            <h3>API Status</h3>
+            <div id="status-display">
+                <span class="status-indicator status-offline"></span>
+                <span id="status-text">Checking API status...</span>
+            </div>
+        </div>
+
+        <!-- Image Upload Section -->
+        <div class="upload-section">
+            <h2>📸 Upload Image for Analysis</h2>
+            <div class="upload-area" id="upload-area">
+                <div class="upload-icon">📁</div>
+                <p>Drag and drop an image here or click to select</p>
+                <p><small>Supports: JPG, PNG, JPEG</small></p>
+                <input type="file" id="file-input" class="file-input" accept="image/*">
+            </div>
+
+            <div class="crop-selector">
+                <label for="crop-select">Select Crop Type (Optional):</label>
+                <select id="crop-select">
+                    <option value="">Auto-detect</option>
+                    <option value="rice">Rice</option>
+                    <option value="wheat">Wheat</option>
+                    <option value="corn">Corn</option>
+                    <option value="soybean">Soybean</option>
+                    <option value="cotton">Cotton</option>
+                    <option value="potato">Potato</option>
+                    <option value="tomato">Tomato</option>
+                    <option value="pepper">Pepper</option>
+                </select>
+            </div>
+
+            <div style="text-align: center;">
+                <button id="analyze-btn" class="analyze-btn" disabled>🔍 Analyze Image</button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="results-section">
+            <h2>📊 Analysis Results</h2>
+            <div id="results-content"></div>
+        </div>
+
+        <!-- History Section -->
+        <div class="history-section">
+            <h2>📋 Detection History</h2>
+            <button id="load-history-btn" class="analyze-btn" style="margin-bottom: 20px;">📥 Load History</button>
+            <div id="history-content"></div>
+        </div>
+    </div>
+
+    <script>
+        class CropDiseaseAPI {
+            constructor(baseURL = 'https://crop-disease-detection-api-0spd.onrender.com') {
+                this.baseURL = baseURL;
+                this.apiURL = `${baseURL}/api`;
+            }
+
+            async checkStatus() {
+                try {
+                    const response = await fetch(`${this.baseURL}/`);
+                    const data = await response.json();
+                    return {
+                        success: true,
+                        status: data.status,
+                        message: data.message
+                    };
+                } catch (error) {
+                    return {
+                        success: false,
+                        error: error.message
+                    };
+                }
+            }
+
+            async analyzeImage(imageFile, cropName = null) {
+                try {
+                    const formData = new FormData();
+                    formData.append('file', imageFile);
+                    
+                    if (cropName) {
+                        formData.append('crop_name', cropName);
+                    }
+
+                    const response = await fetch(`${this.apiURL}/upload`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    return {
+                        success: true,
+                        data: result
+                    };
+
+                } catch (error) {
+                    return {
+                        success: false,
+                        error: error.message
+                    };
+                }
+            }
+
+            async getHistory() {
+                try {
+                    const response = await fetch(`${this.apiURL}/history`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const history = await response.json();
+                    return {
+                        success: true,
+                        data: history
+                    };
+
+                } catch (error) {
+                    return {
+                        success: false,
+                        error: error.message
+                    };
+                }
+            }
+        }
+
+        // Initialize API
+        const api = new CropDiseaseAPI();
+        let selectedFile = null;
+
+        // DOM Elements
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const cropSelect = document.getElementById('crop-select');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const resultsSection = document.getElementById('results-section');
+        const resultsContent = document.getElementById('results-content');
+        const historyContent = document.getElementById('history-content');
+        const statusDisplay = document.getElementById('status-display');
+        const statusText = document.getElementById('status-text');
+        const statusIndicator = document.querySelector('.status-indicator');
+
+        // Check API status on page load
+        async function checkAPIStatus() {
+            const status = await api.checkStatus();
+            if (status.success) {
+                statusIndicator.className = 'status-indicator status-online';
+                statusText.textContent = `✅ ${status.message}`;
+            } else {
+                statusIndicator.className = 'status-indicator status-offline';
+                statusText.textContent = `❌ API Error: ${status.error}`;
+            }
+        }
+
+        // File upload handling
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        function handleFileSelect(file) {
+            if (file.type.startsWith('image/')) {
+                selectedFile = file;
+                uploadArea.innerHTML = `
+                    <div class="upload-icon">✅</div>
+                    <p><strong>${file.name}</strong> selected</p>
+                    <p><small>Size: ${(file.size / 1024 / 1024).toFixed(2)} MB</small></p>
+                `;
+                analyzeBtn.disabled = false;
+            } else {
+                alert('Please select an image file');
+            }
+        }
+
+        // Analyze button click
+        analyzeBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = '🔍 Analyzing...';
+
+            const cropName = cropSelect.value || null;
+            const result = await api.analyzeImage(selectedFile, cropName);
+
+            if (result.success) {
+                displayResults(result.data);
+                resultsSection.style.display = 'block';
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showError(`Analysis failed: ${result.error}`);
+            }
+
+            analyzeBtn.disabled = false;
+            analyzeBtn.textContent = '🔍 Analyze Image';
+        });
+
+        // Display results
+        function displayResults(data) {
+            resultsContent.innerHTML = `
+                <div class="result-card">
+                    <div class="result-header">
+                        <span class="prediction">${data.prediction}</span>
+                        <span class="confidence">${(data.confidence * 100).toFixed(1)}%</span>
+                    </div>
+                    <p><strong>Crop:</strong> ${data.crop_name || 'Auto-detected'}</p>
+                    <p><strong>Diagnosis:</strong> ${data.diagnosis}</p>
+                    ${data.image_url ? `<img src="${data.image_url}" alt="Analyzed Image" class="image-preview">` : ''}
+                    ${data.heatmap_url ? `<p><strong>Heatmap:</strong> <a href="${data.heatmap_url}" target="_blank">View Heatmap</a></p>` : ''}
+                    <p><strong>Analysis ID:</strong> ${data.id}</p>
+                </div>
+            `;
+        }
+
+        // Load history
+        document.getElementById('load-history-btn').addEventListener('click', async () => {
+            const historyBtn = document.getElementById('load-history-btn');
+            historyBtn.disabled = true;
+            historyBtn.textContent = '📥 Loading...';
+
+            const result = await api.getHistory();
+
+            if (result.success) {
+                displayHistory(result.data);
+            } else {
+                showError(`Failed to load history: ${result.error}`);
+            }
+
+            historyBtn.disabled = false;
+            historyBtn.textContent = '📥 Load History';
+        });
+
+        function displayHistory(history) {
+            if (history.length === 0) {
+                historyContent.innerHTML = '<p>No detection history found.</p>';
+                return;
+            }
+
+            const historyHTML = history.map(item => `
+                <div class="history-item">
+                    <div class="result-header">
+                        <span class="prediction">${item.prediction}</span>
+                        <span class="confidence">${(item.confidence * 100).toFixed(1)}%</span>
+                    </div>
+                    <p><strong>Crop:</strong> ${item.crop_name || 'Unknown'}</p>
+                    <p><strong>Timestamp:</strong> ${new Date(item.timestamp).toLocaleString()}</p>
+                    ${item.image_url ? `<p><a href="${item.image_url}" target="_blank">View Image</a></p>` : ''}
+                </div>
+            `).join('');
+
+            historyContent.innerHTML = historyHTML;
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            resultsContent.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+
+        // Initialize page
+        checkAPIStatus();
+    </script>
+</body>
+</html>

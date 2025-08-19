@@ -12,6 +12,7 @@ from .llama_prompt import llama_prompt
 from .utils.image_utils import preprocess_image, save_image_locally
 from .utils.heatmap import generate_heatmap
 from .utils.heatmap_simple import generate_heatmap_simple
+from .utils.disease_descriptions import generate_diagnosis_summary, format_disease_name
 
 # Import config here to avoid circular imports
 from .config import SUPABASE_URL, SUPABASE_KEY, STORAGE_BUCKET
@@ -136,8 +137,16 @@ async def upload_image(
             
             heatmap_url = supabase_client.storage.from_(STORAGE_BUCKET).get_public_url(heatmap_path_in_bucket)
         
-        # Get diagnosis from LLaMA
-        diagnosis = llama_prompt(image_url, pest_name, confidence, crop_name)
+        # Generate comprehensive diagnosis using disease descriptions
+        diagnosis = generate_diagnosis_summary(pest_name, confidence, crop_name)
+        
+        # Also try to get LLaMA diagnosis if available (fallback)
+        try:
+            llama_diagnosis = llama_prompt(image_url, pest_name, confidence, crop_name)
+            if llama_diagnosis and "Unable to generate" not in llama_diagnosis:
+                diagnosis = f"{diagnosis}\n\n**AI-Generated Additional Insights:**\n{llama_diagnosis}"
+        except Exception as e:
+            print(f"LLaMA diagnosis failed, using disease descriptions: {e}")
         
         # Store results in database
         supabase_client.table("detections").insert({
