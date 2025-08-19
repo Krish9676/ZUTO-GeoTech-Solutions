@@ -3,12 +3,8 @@ import requests
 from typing import Optional
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
-
-# Ollama configuration
-OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3")
+# Import config here to avoid circular imports
+from .config import OLLAMA_BASE_URL, OLLAMA_MODEL
 
 
 def llama_prompt(image_url: str, pest_name: str, confidence: float, crop_name: Optional[str] = None) -> str:

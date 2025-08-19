@@ -1,131 +1,167 @@
 # Crop Disease Detection API
 
-A FastAPI-based REST API for detecting crop diseases from images using machine learning models.
+A FastAPI-based REST API for detecting crop diseases from uploaded images using ONNX models and LLaMA integration.
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.8+
-- ONNX Runtime
-- PyTorch
-- FastAPI
-- Supabase (for database)
-
-### Installation
-
-1. **Clone the repository and navigate to the API directory:**
-   ```bash
-   cd api
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables:**
-   Create a `.env` file in the `api/` directory:
-   ```env
-   SUPABASE_URL=your_supabase_url
-   SUPABASE_KEY=your_supabase_key
-   MODEL_PATH=models/mobilenet_crop_pest_model.pth
-   API_HOST=0.0.0.0
-   API_PORT=8000
-   ```
-
-4. **Download the model:**
-   ```bash
-   python scripts/download_model.py
-   ```
-
-### Running the API
-
-#### Development Mode
-```bash
-python run.py --reload
-```
-
-#### Production Mode
-```bash
-python run.py --host 0.0.0.0 --port 8000 --workers 4
-```
-
-#### Using Docker
-```bash
-docker build -t crop-disease-api .
-docker run -p 8000:8000 crop-disease-api
-```
-
-## 📁 Project Structure
+## 🏗️ Project Structure
 
 ```
 api/
 ├── app/                    # Main application code
-│   ├── api.py             # API endpoints and routes
-│   ├── inference.py       # Model inference logic
-│   ├── llama_prompt.py    # LLM prompt handling
-│   ├── main.py            # FastAPI app initialization
-│   └── utils/             # Utility functions
+│   ├── __init__.py        # Package initialization
+│   ├── main.py            # FastAPI app and health checks
+│   ├── api.py             # API routes and endpoints
+│   ├── inference.py       # Model inference engine
+│   ├── llama_prompt.py    # LLaMA integration for diagnosis
+│   ├── config.py          # Centralized configuration
+│   └── utils/             # Utility modules
+│       ├── __init__.py    # Utils package initialization
 │       ├── image_utils.py # Image processing utilities
+│       ├── model_loader.py # Model loading and management
 │       ├── heatmap.py     # Heatmap generation
-│       └── ...
-├── models/                 # ML model files
+│       ├── heatmap_simple.py # Simple heatmap generation
+│       └── supabase_client.py # Supabase database client
+├── models/                 # Model files
+│   ├── mobilenet.onnx     # ONNX model for inference
+│   ├── class_map.json     # Class labels mapping
+│   └── crop_map.json      # Crop labels mapping
 ├── tests/                  # Test files
 ├── requirements.txt        # Python dependencies
 ├── Dockerfile             # Docker configuration
-├── run.py                 # CLI runner script
-└── README.md              # This file
+├── startup.py             # Startup validation script
+├── run.py                 # Alternative run script
+└── env.example            # Environment configuration template
 ```
 
-## 🔌 API Endpoints
+## 🚀 Quick Start
 
-### Health Check
-- `GET /` - API status check
+### 1. Environment Setup
 
-### Core Endpoints
+Copy the environment template and configure your settings:
+
+```bash
+# Copy environment template
+cp env.example .env
+
+# Edit .env with your credentials
+nano .env
+```
+
+Required environment variables:
+- `SUPABASE_URL`: Your Supabase project URL
+- `SUPABASE_KEY`: Your Supabase anon key
+- `STORAGE_BUCKET`: Supabase storage bucket name
+- `MODEL_PATH`: Path to your ONNX model (default: `models/mobilenet.onnx`)
+
+### 2. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the API
+
+#### Option 1: Using startup script (recommended)
+```bash
+python startup.py
+```
+
+#### Option 2: Using run script
+```bash
+python run.py
+```
+
+#### Option 3: Using start_api script
+```bash
+python start_api.py
+```
+
+#### Option 4: Direct uvicorn
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+## 📚 API Endpoints
+
+### Health Checks
+- `GET /` - Root endpoint
+- `GET /health` - Health check
+- `GET /ready` - Readiness check
+
+### Main Endpoints
 - `POST /api/upload` - Upload image for disease detection
 - `GET /api/history` - Get detection history
-- `GET /api/detections/{id}` - Get specific detection details
+- `GET /api/detections/{id}` - Get specific detection
+
+## 🔧 Configuration
+
+The API uses a centralized configuration system in `app/config.py` that:
+
+- Loads environment variables
+- Provides fallback paths for models and files
+- Validates configuration on startup
+- Manages file paths consistently
 
 ## 🧪 Testing
 
-Run the test suite:
+Run the test suite to verify your setup:
+
 ```bash
-cd api
-python -m pytest tests/
+# Test model loading
+python test_model_loading.py
+
+# Test complete setup
+python test_complete_setup.py
+
+# Test Supabase connection
+python test_supabase_connection.py
 ```
 
-## 🚀 Deployment
+## 🐳 Docker
 
-### Render
-The API is configured for deployment on Render. See `render.yaml` for configuration.
+Build and run with Docker:
 
-### Other Platforms
-- **Heroku**: Use the provided Dockerfile
-- **AWS/GCP**: Use the Dockerfile with your preferred container service
+```bash
+# Build image
+docker build -t crop-disease-detection .
 
-## 📝 Environment Variables
+# Run container
+docker run -p 8000:8000 --env-file .env crop-disease-detection
+```
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `SUPABASE_URL` | Supabase project URL | Required |
-| `SUPABASE_KEY` | Supabase API key | Required |
-| `MODEL_PATH` | Path to ML model | `models/mobilenet.onnx` |
-| `API_HOST` | API host address | `0.0.0.0` |
-| `API_PORT` | API port | `8000` |
+## 📁 File Paths
 
-## 🔧 Development
+The API automatically resolves file paths using multiple fallback strategies:
 
-### Adding New Endpoints
-1. Add new routes in `app/api.py`
-2. Update tests in `tests/`
-3. Update this README
+1. Environment variable `MODEL_PATH`
+2. Relative to API directory: `models/mobilenet.onnx`
+3. Relative to current working directory: `models/mobilenet.onnx`
+4. Fallback: `models/mobilenet.onnx`
 
-### Model Updates
-1. Place new models in `models/`
-2. Update `MODEL_PATH` in `.env`
-3. Test inference in `app/inference.py`
+## 🔍 Troubleshooting
 
-## 📞 Support
+### Common Issues
 
-For issues and questions, please check the main project documentation or create an issue in the repository.
+1. **Model not found**: Check `MODEL_PATH` in `.env` or ensure model exists in `models/` directory
+2. **Configuration errors**: Run `python startup.py` to validate configuration
+3. **Import errors**: Ensure you're running from the `api/` directory or have proper Python path
+
+### Debug Mode
+
+Enable debug logging by setting log level:
+
+```bash
+python run.py --log-level debug
+```
+
+## 📖 Documentation
+
+- API documentation available at `http://localhost:8000/docs` when running
+- OpenAPI schema at `http://localhost:8000/openapi.json`
+- Interactive testing at `http://localhost:8000/docs`
+
+## 🤝 Contributing
+
+1. Follow the existing code structure
+2. Update configuration in `app/config.py` for new settings
+3. Add tests for new functionality
+4. Update this README for any structural changes

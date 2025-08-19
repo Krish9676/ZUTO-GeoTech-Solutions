@@ -5,14 +5,11 @@ from datetime import datetime
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Import config here to avoid circular imports
+from ..config import SUPABASE_URL, SUPABASE_KEY, STORAGE_BUCKET
 
-# Supabase configuration
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-STORAGE_BUCKET = os.getenv("SUPABASE_STORAGE_BUCKET", "crop-images")
-HEATMAP_BUCKET = os.getenv("SUPABASE_HEATMAP_BUCKET", "heatmaps")
+# Heatmap bucket configuration
+HEATMAP_BUCKET = "heatmaps"  # Default heatmap bucket
 
 # Singleton pattern for Supabase client
 class SupabaseClient:

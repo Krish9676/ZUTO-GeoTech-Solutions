@@ -45,9 +45,19 @@ async def health_check():
 async def ready_check():
     """Readiness check - verifies the API is ready to handle requests"""
     try:
-        # Quick check if we can access the models directory
-        models_dir = os.path.join(os.path.dirname(__file__), "..", "models")
-        if os.path.exists(models_dir):
+        # Import config here to avoid circular imports
+        from .config import get_model_paths, validate_config
+        
+        # Check configuration
+        config_errors = validate_config()
+        if config_errors:
+            return {"status": "not_ready", "errors": config_errors}
+        
+        # Check if we can access the models directory
+        from pathlib import Path
+        models_dir = Path(__file__).parent.parent / "models"
+        
+        if models_dir.exists():
             return {"status": "ready", "models": "available"}
         else:
             return {"status": "not_ready", "models": "missing"}

@@ -1,11 +1,14 @@
 """
-App module for the Crop Disease Detection API
+Crop Disease Detection API Application
 
-Contains the main API logic, inference engine, and utility functions.
+This module contains the main FastAPI application and related components
+for the crop disease detection service.
 """
 
-from .api import router
-from .inference import run_inference
-from .llama_prompt import llama_prompt
+__version__ = "1.0.0"
 
-__all__ = ["router", "run_inference", "llama_prompt"]
+# Import the main FastAPI app
+from .main import app
+
+# Export the app for easy access
+__all__ = ["app"]

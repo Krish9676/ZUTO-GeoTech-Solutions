@@ -6,8 +6,35 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Path to the ONNX model
-MODEL_PATH = os.getenv("MODEL_PATH", "models/mobilenet.onnx")
+# Import config here to avoid circular imports
+from ..config import get_model_paths
+
+# Get the resolved model path
+MODEL_PATH = None
+
+def get_model_path():
+    """Get the correct path to the model file"""
+    global MODEL_PATH
+    
+    if MODEL_PATH is None:
+        # Use centralized config paths
+        possible_paths = get_model_paths()
+        
+        for path in possible_paths:
+            if path and os.path.exists(path):
+                print(f"✅ Found model at: {path}")
+                MODEL_PATH = path
+                return MODEL_PATH
+        
+        # If no path found, show available paths for debugging
+        print(f"❌ Model file not found. Searched in:")
+        for path in possible_paths:
+            if path:
+                print(f"   - {path} (exists: {os.path.exists(path)})")
+        
+        raise FileNotFoundError("Model file not found in any expected location")
+    
+    return MODEL_PATH
 
 # Singleton pattern for model session
 _model_session = None

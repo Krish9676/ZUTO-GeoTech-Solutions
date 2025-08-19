@@ -7,19 +7,17 @@ import supabase
 from dotenv import load_dotenv
 
 # Import local modules
-from api.app.inference import run_inference
-from api.app.llama_prompt import llama_prompt
-from api.app.utils.image_utils import preprocess_image, save_image_locally
-from api.app.utils.heatmap import generate_heatmap
-from api.app.utils.heatmap_simple import generate_heatmap_simple
+from .inference import run_inference
+from .llama_prompt import llama_prompt
+from .utils.image_utils import preprocess_image, save_image_locally
+from .utils.heatmap import generate_heatmap
+from .utils.heatmap_simple import generate_heatmap_simple
 
-# Load environment variables
-load_dotenv()
+# Import config here to avoid circular imports
+from .config import SUPABASE_URL, SUPABASE_KEY, STORAGE_BUCKET
 
 # Initialize Supabase client
-supabase_url = os.getenv("SUPABASE_URL")
-supabase_key = os.getenv("SUPABASE_KEY")
-supabase_client = supabase.create_client(supabase_url, supabase_key)
+supabase_client = supabase.create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Create router
 router = APIRouter()
@@ -98,7 +96,7 @@ async def upload_image(
         image_tensor = preprocess_image(image_path)
         
         # Run model inference
-        prediction_results = run_inference(image_tensor)
+        prediction_results = run_inference(image_tensor, crop_name)
         
         # Get the top prediction
         pest_name = prediction_results["label"]
@@ -116,13 +114,13 @@ async def upload_image(
             image_data = f.read()
         
         image_path_in_bucket = f"images/{upload_id}.jpg"
-        supabase_client.storage.from_(os.getenv("STORAGE_BUCKET")).upload(
+        supabase_client.storage.from_(STORAGE_BUCKET).upload(
             image_path_in_bucket,
             image_data
         )
         
         # Get the public URL
-        image_url = supabase_client.storage.from_(os.getenv("STORAGE_BUCKET")).get_public_url(image_path_in_bucket)
+        image_url = supabase_client.storage.from_(STORAGE_BUCKET).get_public_url(image_path_in_bucket)
         
         # Upload heatmap to Supabase Storage if available
         heatmap_url = None
@@ -131,12 +129,12 @@ async def upload_image(
                 heatmap_data = f.read()
             
             heatmap_path_in_bucket = f"heatmaps/{upload_id}.jpg"
-            supabase_client.storage.from_(os.getenv("STORAGE_BUCKET")).upload(
+            supabase_client.storage.from_(STORAGE_BUCKET).upload(
                 heatmap_path_in_bucket,
                 heatmap_data
             )
             
-            heatmap_url = supabase_client.storage.from_(os.getenv("STORAGE_BUCKET")).get_public_url(heatmap_path_in_bucket)
+            heatmap_url = supabase_client.storage.from_(STORAGE_BUCKET).get_public_url(heatmap_path_in_bucket)
         
         # Get diagnosis from LLaMA
         diagnosis = llama_prompt(image_url, pest_name, confidence, crop_name)

@@ -33,15 +33,45 @@ def main():
     
     # Check if model file exists
     model_path = os.getenv('MODEL_PATH', os.path.join('models', 'mobilenet.onnx'))
-    if not os.path.exists(model_path):
-        print(f"\nWARNING: Model file not found at {model_path}")
+    
+    # Try multiple possible locations
+    possible_model_paths = [
+        model_path,
+        os.path.join(os.path.dirname(__file__), 'models', 'mobilenet.onnx'),
+        os.path.join(os.getcwd(), 'models', 'mobilenet.onnx')
+    ]
+    
+    model_found = False
+    for path in possible_model_paths:
+        if os.path.exists(path):
+            model_found = True
+            print(f"✅ Model found at: {path}")
+            break
+    
+    if not model_found:
+        print(f"\nWARNING: Model file not found in any expected location")
+        print("Searched in:")
+        for path in possible_model_paths:
+            print(f"  - {path} (exists: {os.path.exists(path)})")
         print("You can download a model using the scripts/download_model.py script:")
         print("  python scripts/download_model.py --model mobilenet")
     
     # Check if .env file exists
-    if not os.path.exists('.env'):
-        print("\nWARNING: .env file not found")
-        print("You should create a .env file based on .env.example")
+    env_files = ['.env', 'env.example']
+    env_found = False
+    
+    for env_file in env_files:
+        if os.path.exists(env_file):
+            env_found = True
+            print(f"✅ Environment file found: {env_file}")
+            break
+    
+    if not env_found:
+        print("\nWARNING: No environment file found")
+        print("You should create a .env file based on env.example")
+        print("Available environment files:")
+        for env_file in env_files:
+            print(f"  - {env_file} (exists: {os.path.exists(env_file)})")
     
     # Run the API
     uvicorn.run(

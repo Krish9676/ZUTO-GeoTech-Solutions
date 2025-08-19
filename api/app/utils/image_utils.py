@@ -6,10 +6,9 @@ from torchvision import transforms
 from fastapi import UploadFile
 from typing import Tuple
 
-# Define image preprocessing transformations
+# Define image preprocessing transformations - updated to match training (160x160)
 preprocess_transforms = transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),
+    transforms.Resize((160, 160)),  # Changed from 256 to 160x160
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
@@ -25,8 +24,11 @@ async def save_image_locally(file: UploadFile, upload_id: str) -> str:
     Returns:
         Path to the saved image
     """
+    # Import config here to avoid circular imports
+    from ..config import get_temp_dir
+    
     # Create temp directory if it doesn't exist
-    temp_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "temp")
+    temp_dir = get_temp_dir()
     os.makedirs(temp_dir, exist_ok=True)
     
     # Determine file extension
