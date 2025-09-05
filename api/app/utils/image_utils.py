@@ -6,12 +6,34 @@ from torchvision import transforms
 from fastapi import UploadFile
 from typing import Tuple
 
-# Define image preprocessing transformations - updated to match training (160x160)
-preprocess_transforms = transforms.Compose([
-    transforms.Resize((160, 160)),  # Changed from 256 to 160x160
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
+# Define image preprocessing transformations - will be updated dynamically from model config
+def get_preprocess_transforms():
+    """Get preprocessing transforms based on the trained model configuration"""
+    try:
+        # Import here to avoid circular imports
+        from ..inference import load_preprocess_config
+        
+        config = load_preprocess_config()
+        img_size = config.get("img_size", 160)
+        mean = config.get("normalize_mean", [0.485, 0.456, 0.406])
+        std = config.get("normalize_std", [0.229, 0.224, 0.225])
+        
+        return transforms.Compose([
+            transforms.Resize((img_size, img_size)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=mean, std=std),
+        ])
+    except Exception as e:
+        print(f"Error loading preprocessing config, using defaults: {e}")
+        # Fallback to default values
+        return transforms.Compose([
+            transforms.Resize((160, 160)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
+
+# Default transforms for backward compatibility
+preprocess_transforms = get_preprocess_transforms()
 
 
 async def save_image_locally(file: UploadFile, upload_id: str) -> str:
@@ -64,8 +86,11 @@ def preprocess_image(image_path: str) -> torch.Tensor:
     # Open image
     image = Image.open(image_path).convert("RGB")
     
+    # Get the current preprocessing transforms (may be updated from model config)
+    transforms = get_preprocess_transforms()
+    
     # Apply preprocessing transformations
-    image_tensor = preprocess_transforms(image)
+    image_tensor = transforms(image)
     
     return image_tensor
 

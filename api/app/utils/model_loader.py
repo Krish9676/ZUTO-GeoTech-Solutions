@@ -1,5 +1,7 @@
 import os
 import onnxruntime as ort
+import torch
+import torch.nn as nn
 from typing import Dict, Any
 from dotenv import load_dotenv
 
@@ -8,6 +10,51 @@ load_dotenv()
 
 # Import config here to avoid circular imports
 from ..config import get_model_paths
+
+# Multi-head crop disease model architecture
+class MultiHeadCropDiseaseModel(nn.Module):
+    def __init__(self, crop_id_to_num_classes, weights="DEFAULT"):
+        super().__init__()
+        # Load MobileNet backbone
+        if hasattr(torch.hub, "load_state_dict_from_url"):
+            # Use torchvision models
+            import torchvision.models as models
+            if hasattr(models, "MobileNet_V3_Small_Weights"):
+                weight_enum = getattr(models.MobileNet_V3_Small_Weights, weights)
+                mobilenet = models.mobilenet_v3_small(weights=weight_enum)
+            else:
+                mobilenet = models.mobilenet_v3_small(pretrained=True)
+        else:
+            # Fallback for older torchvision
+            import torchvision.models as models
+            mobilenet = models.mobilenet_v3_small(pretrained=True)
+
+        self.backbone = mobilenet.features
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+
+        # Per-crop classification heads
+        self.heads = nn.ModuleDict({
+            str(crop_id): nn.Linear(576, num_classes)
+            for crop_id, num_classes in crop_id_to_num_classes.items()
+        })
+
+    def forward_features(self, x):
+        """Extract backbone features"""
+        x = self.backbone(x)
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        return x
+
+    def forward_head(self, feats, crop_id: int):
+        """Run features through the correct crop-specific head"""
+        return self.heads[str(int(crop_id))](feats)
+
+    def forward(self, images, crop_ids):
+        feats = self.forward_features(images)
+        outputs = []
+        for i, cid in enumerate(crop_ids):
+            outputs.append(self.forward_head(feats[i].unsqueeze(0), cid))
+        return torch.cat(outputs, dim=0)
 
 # Get the resolved model path
 MODEL_PATH = None

@@ -24,6 +24,19 @@ supabase_client = supabase.create_client(SUPABASE_URL, SUPABASE_KEY)
 router = APIRouter()
 
 
+@router.get("/crops")
+async def get_available_crops():
+    """Get list of available crops for disease detection"""
+    try:
+        from .inference import CROP_LABELS
+        return {
+            "crops": CROP_LABELS,
+            "total": len(CROP_LABELS)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/history")
 async def get_detection_history():
     """Get all detection history"""
@@ -83,7 +96,7 @@ async def get_detection(detection_id: str):
 @router.post("/upload")
 async def upload_image(
     file: UploadFile = File(...),
-    crop_name: Optional[str] = Form(None)
+    crop_name: str = Form(...)
 ):
     """Upload an image for pest/disease detection"""
     try:
