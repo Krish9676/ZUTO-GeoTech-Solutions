@@ -3,14 +3,21 @@
   "endpoints": {
     "upload": "/api/upload",
     "history": "/api/history",
-    "detections": "/api/detections"
+    "detections": "/api/detections",
+    "crops": "/api/crops"
   },
-  "timeout_seconds": 30,
+  "timeout_seconds": 60,
   "max_image_size": "5MB",
   "supported_image_formats": [
     "jpg",
     "jpeg",
     "png"
   ],
-  "test_timestamp": "2025-08-12T14:44:20.773368"
+  "features": {
+    "llm_recommendations": true,
+    "heatmap_visualization": true,
+    "disease_descriptions": true,
+    "crop_selection": true
+  },
+  "test_timestamp": "2025-09-06T06:49:14.000000"
 }

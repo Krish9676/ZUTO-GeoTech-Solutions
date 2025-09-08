@@ -31,6 +31,71 @@ DISEASE_INFO = {
         "status": "diseased",
         "recommendation": "Apply systemic fungicides. Remove infected plants. Rotate crops."
     },
+    "rice_leaf_mold": {
+        "description": "Fungal disease causing grayish-white mold growth on rice leaves, often appearing as fuzzy patches",
+        "status": "diseased",
+        "recommendation": "Improve air circulation. Apply fungicides. Reduce humidity and avoid overhead watering. Remove infected plant debris."
+    },
+    "rice_anthracnose": {
+        "description": "Fungal disease causing dark, sunken lesions on rice leaves and stems",
+        "status": "diseased",
+        "recommendation": "Apply fungicides. Remove infected debris. Improve field drainage and air circulation."
+    },
+    "rice_leaf_spot": {
+        "description": "Fungal disease causing small, dark spots on rice leaves that can coalesce into larger lesions",
+        "status": "diseased",
+        "recommendation": "Apply fungicides. Remove infected leaves. Use resistant varieties and proper spacing."
+    },
+    "rice_rust": {
+        "description": "Fungal rust disease causing orange to reddish-brown pustules on rice leaves",
+        "status": "diseased",
+        "recommendation": "Apply fungicides early. Use resistant varieties. Monitor humidity and temperature conditions."
+    },
+    "rice_verticillium_wilt": {
+        "description": "Fungal wilt disease causing yellowing and wilting of rice leaves, often starting from the bottom",
+        "status": "diseased",
+        "recommendation": "Remove infected plants. Improve soil drainage. Use resistant varieties and crop rotation."
+    },
+    "rice_fusarium_wilt": {
+        "description": "Fungal wilt disease causing stunting, yellowing, and wilting of rice plants",
+        "status": "diseased",
+        "recommendation": "Remove infected plants. Improve soil drainage. Use resistant varieties and avoid waterlogging."
+    },
+    "rice_leaf_curl": {
+        "description": "Viral disease causing curling and distortion of rice leaves, often with yellowing",
+        "status": "diseased",
+        "recommendation": "Remove infected plants. Control insect vectors. Use resistant varieties and clean tools."
+    },
+    "rice_mosaic_virus": {
+        "description": "Viral disease causing mottled, mosaic patterns on rice leaves with stunted growth",
+        "status": "diseased",
+        "recommendation": "Remove infected plants. Control aphids and other vectors. Use resistant varieties and clean equipment."
+    },
+    "rice_early_blight": {
+        "description": "Fungal disease causing dark brown lesions with concentric rings on rice leaves",
+        "status": "diseased",
+        "recommendation": "Apply fungicides. Remove infected debris. Improve air circulation and avoid overhead watering."
+    },
+    "rice_late_blight": {
+        "description": "Devastating fungal disease causing dark lesions and white mold on rice leaves",
+        "status": "diseased",
+        "recommendation": "Apply fungicides immediately. Remove infected plants. Monitor weather conditions and humidity."
+    },
+    "rice_root_rot": {
+        "description": "Fungal disease causing root decay and stunted growth in rice plants",
+        "status": "diseased",
+        "recommendation": "Improve soil drainage. Apply fungicides to soil. Use resistant varieties and proper water management."
+    },
+    "rice_alternaria_blight": {
+        "description": "Fungal disease causing dark brown to black lesions on rice leaves and panicles",
+        "status": "diseased",
+        "recommendation": "Apply fungicides. Remove infected debris. Improve air circulation and reduce humidity."
+    },
+    "rice_phomopsis_blight": {
+        "description": "Fungal disease causing brown lesions and cankers on rice stems and leaves",
+        "status": "diseased",
+        "recommendation": "Apply fungicides. Remove infected plants. Use resistant varieties and proper crop rotation."
+    },
     
     # Wheat diseases
     "healthy_wheat": {
